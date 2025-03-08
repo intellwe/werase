@@ -30,6 +30,11 @@ const isMobileSafari = () => {
   return iOSSafari && 'ontouchend' in document;
 };
 
+// Helper function to prevent redirect loops
+const isRedirectPage = () => {
+  return window.location.pathname.includes('/mobile');
+};
+
 // Add this helper function at the top level
 const getCurrentYear = () => new Date().getFullYear();
 
@@ -43,7 +48,7 @@ export default function App() {
   const [images, setImages] = useState<ImageFile[]>([]);
 
   useEffect(() => {
-    if (isMobileSafari()) {
+    if (isMobileSafari() && !isRedirectPage()) {
       window.location.href = 'https://werase.intellwe.com/mobile';
       return;
     }

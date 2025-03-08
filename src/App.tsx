@@ -35,7 +35,6 @@ const isRedirectPage = () => {
   return window.location.pathname.includes('/mobile');
 };
 
-// Add this helper function at the top level
 const getCurrentYear = () => new Date().getFullYear();
 
 export default function App() {
@@ -106,7 +105,7 @@ export default function App() {
         setError({
           message: err instanceof Error ? err.message : "An unknown error occurred"
         });
-        setImages([]); // Clear the newly added images if model fails to load
+        setImages([]); 
         setIsLoading(false);
         return;
       }
@@ -129,8 +128,7 @@ export default function App() {
     }
   }, [images.length]);
 
-
-  const handlePaste = async (event: React.ClipboardEvent) => {
+  const handlePaste = useCallback(async (event: React.ClipboardEvent) => {
     const clipboardItems = event.clipboardData.items;
     const imageFiles: File[] = [];
     for (const item of clipboardItems) {
@@ -144,7 +142,19 @@ export default function App() {
     if (imageFiles.length > 0) {
       onDrop(imageFiles);
     }
-  };  
+  }, [onDrop]);  
+
+  useEffect(() => {
+    const handleGlobalPaste = (e: ClipboardEvent) => {
+      handlePaste(e as unknown as React.ClipboardEvent);
+    };
+    
+    window.addEventListener('paste', handleGlobalPaste);
+    
+    return () => {
+      window.removeEventListener('paste', handleGlobalPaste);
+    };
+  }, [handlePaste]);
 
   const handleSampleImageClick = async (url: string) => {
     try {

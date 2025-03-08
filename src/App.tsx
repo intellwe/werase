@@ -30,6 +30,9 @@ const isMobileSafari = () => {
   return iOSSafari && 'ontouchend' in document;
 };
 
+// Add this helper function at the top level
+const getCurrentYear = () => new Date().getFullYear();
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<AppError | null>(null);
@@ -165,7 +168,7 @@ export default function App() {
   // Remove the full screen error and loading states
 
   return (
-    <div className="app-container">
+    <div className="app-container min-h-screen flex flex-col">
       <nav className="glass-nav fixed w-full z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -197,7 +200,7 @@ export default function App() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 flex-grow">
         <div className={`grid ${images.length === 0 ? 'grid-cols-1 lg:grid-cols-2 gap-8' : 'grid-cols-1'}`}>
           {images.length === 0 && (
             <div className="flex flex-col justify-center space-y-6">
@@ -309,6 +312,32 @@ export default function App() {
           </div>
         </div>
       </main>
+
+      <footer className="mt-auto py-6 glass-nav">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-gray-400 flex items-center justify-center gap-2">
+            Made with 
+            <svg 
+              className="w-4 h-4 text-red-500" 
+              fill="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+            </svg>
+            by
+            <a 
+              href="https://intellwe.com" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-accent hover:text-accent/80 transition-colors"
+            >
+              IntellWe
+            </a>
+            <span className="text-gray-400">©</span>
+            {getCurrentYear()}
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

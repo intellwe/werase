@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import type { ImageFile } from "../App";
 import { EditModal } from "./EditModal";
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 interface ImagesProps {
   images: ImageFile[];
@@ -17,6 +19,24 @@ export function Images({ images, onDelete }: ImagesProps) {
       [imageId]: editedImageUrl
     }));
     setEditingImage(null);
+  };
+
+  const handleBulkDownload = async () => {
+    const zip = new JSZip();
+    
+    // Add all processed images to the zip
+    for (const image of images) {
+      if (image.processedFile) {
+        const imageUrl = processedImageUrls[image.id] || URL.createObjectURL(image.processedFile);
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        zip.file(`werase-${image.id}.png`, blob);
+      }
+    }
+    
+    // Generate and download the zip
+    const content = await zip.generateAsync({ type: 'blob' });
+    saveAs(content, 'werase-images.zip');
   };
 
   return (
@@ -45,6 +65,15 @@ export function Images({ images, onDelete }: ImagesProps) {
         onClose={() => setEditingImage(null)}
         onSave={(url) => editingImage && handleEditSave(editingImage.id, url)}
       />
+
+      {images.filter(img => img.processedFile).length > 1 && (
+        <button 
+          onClick={handleBulkDownload}
+          className="btn-primary mt-4 w-full"
+        >
+          Download All Images
+        </button>
+      )}
     </>
   );
 }

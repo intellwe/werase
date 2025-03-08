@@ -15,7 +15,7 @@ export interface ImageFile {
 
 // Sample images from Unsplash
 const sampleImages = [
-  "https://images.unsplash.com/photo-1738509559266-bdd2a813c8ad?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3",
+  "https://images.unsplash.com/photo-1581803118522-7b72a50f7e9f?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3",
   "https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?q=80&w=2970&auto=format&fit=crop&ixlib=rb-4.0.3",
   "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3",
   "https://images.unsplash.com/photo-1574158622682-e40e69881006?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3"
